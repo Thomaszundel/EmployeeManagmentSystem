@@ -1,0 +1,11 @@
+﻿<h4>Welcome to Employee Manager</h4>
+
+@model IQueryable<Employee>
+
+@foreach (var p in Model ?? Enumerable.Empty<Employee>())
+{
+    <div>
+        <h3>@p.FirstName @p.LastName : @p.Position</h3>
+        
+    </div>
+}
