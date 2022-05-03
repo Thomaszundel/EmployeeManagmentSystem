@@ -4,27 +4,36 @@ namespace EmployeeManagmentSystem.Models
 {
     public static class SeedData
     {
-        public static void EnsurePopulated(IApplicationBuilder app)
+        public static void SeedDatabase(EmpManagerDbContext context)
         {
-            EmpManagerDbContext context = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<EmpManagerDbContext>();
-
-            if (context.Database.GetPendingMigrations().Any())
+            context.Database.Migrate();
+            
+            if (context.People.Count() == 0 && context.Departments.Count() == 0 && context.Locations.Count() == 0)
             {
-                context.Database.Migrate();
-            }
+                Department d1 = new Department { Name = "Intern" };
+                Department d2 = new Department { Name = "IT" };
+                Department d3 = new Department { Name = "Manufacturer" };
+                Department d4 = new Department { Name = "Secratary" };
 
-            if (!context.Employees.Any())
-            {
-                context.Employees.AddRange(
-                    new Employee { FirstName = "Jim", LastName = "Davis", Position = "Intern" },
-                    new Employee { FirstName = "John", LastName = "Schmitt", Position = "Intern" },
-                    new Employee { FirstName = "Jordan", LastName = "Neal", Position = "IT" },
-                    new Employee { FirstName = "Rebecca", LastName = "Schnider", Position = "HR" },
-                    new Employee { FirstName = "Yolanda", LastName = "Fredrick", Position = "Manufacturer" },
-                    new Employee { FirstName = "Tina", LastName = "Gurtner", Position = "Manufacturer" },
-                    new Employee { FirstName = "Freddy", LastName = "Rico", Position = "Manufacturer" },
-                    new Employee { FirstName = "Chelsea", LastName = "Mendez", Position = "Secratary" },
-                    new Employee { FirstName = "Thomas", LastName = "Zundel", Position = "IT" }
+                context.Departments.AddRange(d1, d2, d3, d4);
+                context.SaveChanges();
+
+                Location l1 = new Location { City = "Chehalis", State = "WA" };
+                Location l2 = new Location { City = "Centrilia", State = "WA" };
+                Location l3 = new Location { City = "New York", State = "NY" };
+                context.Locations.AddRange(l1, l2, l3);
+
+
+                context.People.AddRange(
+                    new Person { FirstName = "Jim", LastName = "Davis", Department =d1, Location = l2 },
+                    new Person { FirstName = "John", LastName = "Schmitt", Department = d1, Location = l3 },
+                    new Person { FirstName = "Jordan", LastName = "Neal", Department = d2, Location = l2 },
+                    new Person { FirstName = "Rebecca", LastName = "Schnider", Department = d4, Location = l2 },
+                    new Person { FirstName = "Yolanda", LastName = "Fredrick", Department = d3, Location = l1 },
+                    new Person { FirstName = "Tina", LastName = "Gurtner", Department = d3, Location = l3 },
+                    new Person { FirstName = "Freddy", LastName = "Rico", Department = d3, Location = l3 },
+                    new Person { FirstName = "Chelsea", LastName = "Mendez", Department = d4, Location = l1 },
+                    new Person { FirstName = "Thomas", LastName = "Zundel", Department = d2, Location = l1 }
                     );
                 context.SaveChanges();
             }

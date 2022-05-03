@@ -16,20 +16,20 @@ namespace EmpManagmentTestProject1
             //arrange
 
             Mock<IEmployeeRepository> mock = new Mock<IEmployeeRepository>();
-            mock.Setup(m => m.Employees).Returns((new Employee[]
+            mock.Setup(m => m.Employees).Returns((new Person[]
             {
-                new Employee {EmployeeID = 1, FirstName = "P1"},
-                new Employee {EmployeeID = 2, FirstName = "P2"}
-            }).AsQueryable<Employee>());
+                new Person {EmployeeID = 1, FirstName = "P1"},
+                new Person {EmployeeID = 2, FirstName = "P2"}
+            }).AsQueryable<Person>());
 
             HomeController controller = new HomeController(mock.Object);
 
             //act
-            IEnumerable<Employee>? result =
-           (controller.Index() as ViewResult)?.ViewData.Model as IEnumerable<Employee>;
+            IEnumerable<Person>? result =
+           (controller.Index() as ViewResult)?.ViewData.Model as IEnumerable<Person>;
 
             //Assert
-            Employee[] empArray = result?.ToArray() ?? Array.Empty<Employee>();
+            Person[] empArray = result?.ToArray() ?? Array.Empty<Person>();
             Assert.True(empArray.Length == 2);
             Assert.Equal("P1", empArray[0].FirstName);
             Assert.Equal("P2", empArray[1].FirstName);
