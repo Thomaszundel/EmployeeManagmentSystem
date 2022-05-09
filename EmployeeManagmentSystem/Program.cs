@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<EmpManagerDbContext>(opts => { 
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:EmployeeManagerConnection"]);
@@ -19,6 +20,7 @@ app.UseStaticFiles();
 app.MapControllers();
 app.MapControllerRoute("controllers", "controllers/{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.MapBlazorHub();
 
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EmpManagerDbContext>();
 SeedData.SeedDatabase(context);
