@@ -8,9 +8,9 @@ namespace EmployeeManagmentSystem.Blazor
     public class CodeOnly : ComponentBase
     {
         [Inject]
-        public EmpManagerDbContext Context { get; set; }
+        public EmpManagerDbContext? Context { get; set; }
 
-        public IEnumerable<string> Names => Context.People.Select(p => p.FirstName) ?? Enumerable.Empty<string>();
+        public IEnumerable<string> Names => Context?.People.Select(p => p.FirstName) ?? Enumerable.Empty<string>();
 
         public bool Ascending { get; set; } = false;
 

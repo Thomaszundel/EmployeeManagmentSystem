@@ -21,6 +21,7 @@ app.MapControllers();
 app.MapControllerRoute("controllers", "controllers/{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EmpManagerDbContext>();
 SeedData.SeedDatabase(context);

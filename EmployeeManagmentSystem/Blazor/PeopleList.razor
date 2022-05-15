@@ -1,37 +1,56 @@
-﻿<table class="table table-sm table-bordered table-striped">
-    <thead>
+﻿@page "/people"
+@page "/"
+
+<TableTemplate RowType="Person" RowData="People" Highlight="@(p => p.Location?.City)" SortDirection="@(p => p.FirstName)">
+    <Header>
         <tr>
             <th>ID</th><th>Name</th><th>Dept</th><th>Location</th>
+            <td></td>
         </tr>
-    </thead>
-    <tbody>
-        @foreach (Person p in People ?? Enumerable.Empty<Person>())
-        {
-            <tr class="@GetClass(p?.Location?.City)">
-                <td>@p.PersonId</td>
-                <td>@p.LastName, @p.FirstName</td>
-                <td>@p.Department?.Name</td>
-                <td>@p.Location?.City, @p.Location?.State</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    </Header>
+    <RowTemplate Context="p">
 
-<SelectFilter values="@Cities" title="@SelectTitle" />
-    
+        <td>@p.PersonId</td>
+        <td>@p.LastName, @p.FirstName</td>
+        <td>@p.Department?.Name</td>
+        <td>@p.Location?.City, @p.Location?.State</td>
+        <td>
+            <NavLink class="btn btn-sm btn-info" href="@GetEditUrl(p.PersonId)">
+                Edit
+            </NavLink>
+        </td>
+    </RowTemplate>
+</TableTemplate>
+
+<NavLink class="btn btn-primary" href="/depts">Departments</NavLink>
+
+
 
 @code {
     [Inject]
     public EmpManagerDbContext? Context { get; set; }
-    public IEnumerable<Person>? People => Context?.People.Include(p => p.Department).Include(p => p.Location).Take(ItemCount);
-    public IEnumerable<string>? Cities => Context?.Locations.Select(l => l.City);
-    public string SelectedCity { get; set; } = string.Empty;
-    public string GetClass(string? city) => SelectedCity == city ? "bg-info text-white" : "";
 
-    [Parameter]
-    public int ItemCount { get; set; } = 4;
+    public IEnumerable<Person>? People => Context?.People
+        .Include(p => p.Department)
+        .Include(p => p.Location);
 
-    [Parameter]
-    public string? SelectTitle { get; set; }
+    public string GetEditUrl(long id) => $"/person/{id}";
+
+    //public IEnumerable<string>? Cities => Context?.Locations.Select(l => l.City);
+
+    //public string SelectedCity { get; set; } = string.Empty;
+
+    //public string GetClass(string? city) => SelectedCity == city ? "bg-info text-white" : "";
+
+    //[Parameter]
+    //public int ItemCount { get; set; } = 4;
+
+    //[Parameter]
+    //public string? SelectTitle { get; set; }
+
+    ////public void HandleCustom(string newValue)
+    ////{
+    ////    SelectedCity = newValue;
+    ////}
 
 }

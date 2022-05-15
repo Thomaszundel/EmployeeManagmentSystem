@@ -1,22 +1,29 @@
 ﻿@page "/pages/blazor"
 
-<h4 class="bg-primary text-white text-center p-2">Class Only</h4>
-
-<component type="typeof(EmployeeManagmentSystem.Blazor.CodeOnly)" render-mode="Server" />
+<h4 class="bg-primary text-white text-center p-2">Departments</h4>
 
 
-@*<script type="text/javascript">
-    window.addEventListener("DOMContentLoaded",()=> {
-        document.getElementById("markElems").addEventListener("click",()=>{
-        documnet.querySelectorAll(td:first-child).foreach(elem =>{
-            elem.innerText = M:${elem.innerText}
-            elem.classList.add("border","border-dark");
-        });
-        });
-    });
-</script>
-<h4 class="bg-primary text-white text-center p-2">Blazor People</h4>
-<button id="markElems" class="btn-primary btn-outline-primary mb-2">Mark Elements</button>
-<component type="typeof(EmployeeManagmentSystem.Blazor.PeopleList)" render-mode="Server" />
-*@
 
+<link rel="stylesheet" href="connectionErrors.css" />
+
+<div id="components-reconnect-modal" class="h4 bg-dark text-white text-center my-2 p-2 components-reconnect-hide">
+    Blazor Connection Lost 
+    <div class="reconnect">
+        Trying to reconnect...
+    </div>
+    <div class="failed">
+        Reconnection Failed.
+        <button class="btn btn-light btn-sm m-1" onclick="location.reload()">
+            Reload
+        </button>
+    </div>
+</div>
+
+<div id="blazor-error-ui" class="text-center bg-danger h6 text-white p-2 fixed-top w-100" style="display:none">
+    An Error has occured. This application will not respond until reloaded.
+    <button class="btn btn-sm btn-primary m-1" onclick="location.reload()">
+        Reload
+    </button>
+</div>
+
+<component type="typeof(EmployeeManagmentSystem.Blazor.DepartmentList)" render-mode="Server" />
