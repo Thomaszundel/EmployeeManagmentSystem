@@ -68,10 +68,22 @@
 
     private bool Enabled { get; set; } = true;
 
-    public void SetEnabled(bool enabled)
-    {
-        Enabled = enabled;
-        CheckMatch(NavManager!.Uri);
+    public void SetEnabled(bool enabled){
+        InvokeAsync(()=>{
+            Enabled = enabled;
+            CheckMatch(NavManager!.Uri);
+            StateHasChanged();
+        });
+
     }
 
+    [JSInvokable]
+    public static void ToggleEnabled() => ToggleEvent?.Invoke(null, new EventArgs());
+
+    public static EventHandler? ToggleEvent;
+
+    protected override void OnInitialized()
+    {
+        ToggleEvent += (sender, args) => SetEnabled(!Enabled);
+    }
 }

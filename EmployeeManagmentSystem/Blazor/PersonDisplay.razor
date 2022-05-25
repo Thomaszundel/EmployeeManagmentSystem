@@ -10,13 +10,14 @@ else
     <table class="table table-striped table-bordered">
         <tbody>
             <tr><th>Id</th><td>@Person.PersonId</td></tr>
-            <tr><th>Lastname</th><td>@Person.FirstName</td></tr>
-            <tr><th>Firstname</th><td>@Person.LastName</td></tr>
+            <tr @ref="RowReference"><th>Lastname</th><td>@Person.LastName</td></tr>
+            <tr><th>Firstname</th><td>@Person.FirstName</td></tr>
         </tbody>
     </table>
 }
-    <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(false))">Previous</button>
-    <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(true))">Next</button>
+<button class="btn btn-outline-primary" @onclick="HandleClick">Invoke JS function</button>
+    @*<button class="btn btn-outline-primary" @onclick="@(() => HandleClick(false))">Previous</button>
+    <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(true))">Next</button>*@
 
 @code {
     [Inject]
@@ -25,6 +26,9 @@ else
     [Inject]
     public NavigationManager? NavManager { get; set; }
 
+    [Inject]
+    public IJSRuntime? JSRuntime{ get; set; }
+
     [Parameter]
     public long Id { get; set; }
 
@@ -32,16 +36,18 @@ else
 
     protected async override Task OnParametersSetAsync()
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         if(Context != null)
         {
             Person = await Context.People.FirstOrDefaultAsync(p => p.PersonId == Id) ?? new Person();
         }
     }
-    public void HandleClick(bool increment)
+
+    public ElementReference RowReference { get; set; }
+
+    public async Task HandleClick()
     {
-        Person = null;
-        NavManager?.NavigateTo($"/person/{(increment ? Id + 1 : Id - 1)}");
+        await JSRuntime!.InvokeVoidAsync("addTableRows", 2, RowReference);
     }
 
 }
