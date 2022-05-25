@@ -12,7 +12,7 @@ builder.Services.AddDbContext<EmpManagerDbContext>(opts => {
     opts.EnableSensitiveDataLogging(true);
 });
     
-
+builder.Services.AddSingleton<EmployeeManagmentSystem.Services.ToggleService>();
 
 var app = builder.Build();
 
