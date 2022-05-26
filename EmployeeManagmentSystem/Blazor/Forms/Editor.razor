@@ -1,47 +1,42 @@
 ﻿@page "/forms/edit/{id:long}"
 @layout EmptyLayout
 
-<h4 class="bg-primary text-center text-white p-2"> Edit </h4>
+<h4 class="bg-primary text-center text-white p-2">Edit</h4>
 
 <FormSpy PersonData="PersonData">
-    <h4 class="text-center">Form Placeholder</h4>
-    <div class="text-center">
-        <NavLink class="btn btn-secondary mt-2" href="/forms">Back</NavLink>
-    </div>
-</FormSpy>
-
-@*<FormSpy PersonData ="PersonData" >
-    <EditForm Model ="PersonData" >
-        <div class= "form-group" >
-            <label> Person ID </label >
-            <InputNumber class= "form-control" @bind - Value = "PersonData.PersonId" disabled />
+    <EditForm Model="PersonData">
+        <div class="form-group">
+            <label>Person ID</label>
+            <InputNumber class="form-control" @bind-Value="PersonData.PersonId" disabled />
         </div >
-        <div class= "form-group" >
-            <label> Firstname </label >
-            <InputText class= "form-control" @bind - Value = "PersonData.FirstName" />
+        <div class="form-group">
+            <label>Firstname</label>
+            <InputText class="form-control" @bind-Value="PersonData.FirstName" />
         </div >
-        <div class= "form-group" >
-            <label> Lastname </label >
-            <InputText class= "form-control" @bind - Value = "PersonData.LastName" />
+        <div class="form-group">
+            <label> Lastname </label>
+            <InputText class="form-control" @bind-Value="PersonData.LastName" />
         </div >
-        <div class= "form-group" >
-            <label> Dept ID </label>
-            <CustomSelect TValue = "long" Values = "Departments" Parser = "@((string str) => long.Parse(str))" @bind - Value = "PersonData.DepartmentId" >
-                <option selected disabled value="0">Choose a Department</option>
-            </CustomSelect>
-        </div>
         <div class= "form-group">
+            <label> Dept ID </label>
+            <InputNumber class="form-control" @bind-Value="PersonData.DepartmentId" />
+            @*<CustomSelect TValue = "long" Values = "Departments" Parser = "@((string str) => long.Parse(str))" @bind - Value = "PersonData.DepartmentId" >
+                <option selected disabled value="0">Choose a Department</option>
+            </CustomSelect>*@
+        </div>
+        @*<div class= "form-group">
             <label> Location ID </label >
+            <InputNumber class="form-control" @bind-Value="PersonData.DepartmentId" />
             <CustomSelect TValue = "long" Values = "Locations" Parser = "@((string str) => long.Parse(str))" @bind - Value = "PersonData.LocationId">
                 <option selected disabled value="0">Choose a Location</option>
             </CustomSelect>
+        </div>*@
+        <div class="text-center">
+            <NavLink class="btn btn-secondary" href="/forms">Back</NavLink>
         </div>
-        <div class= "text-center" >
-            <NavLink class= "btn btn-secondary" href = "/forms" > Back </NavLink>
-        </div >
 
-         </EditForm>
-</FormSpy>*@
+    </EditForm>
+</FormSpy>
 
 @code {
 
