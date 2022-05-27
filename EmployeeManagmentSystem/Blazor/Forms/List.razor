@@ -1,6 +1,7 @@
 ﻿@page "/forms"
 @page "/forms/list"
 @layout EmptyLayout
+@inherits OwningComponentBase<EmpManagerDbContext>
 
 <h5 class="bg-primary text-white text-center p-2"> People </h5 >
 
@@ -24,31 +25,64 @@
                     <td> @p.LastName, @p.FirstName </td>
                     <td> @p.Department?.Name </td>
                     <td> @p.Location?.City </td>
-                    <td>
-                        <NavLink class= "btn btn-sm btn-warning" href = "@GetEditUrl(p.PersonId)">
-                            Edit
-                        </NavLink>
-
-                    </td >
-                </tr >
+                    <td class="text-center">
+                        <NavLink class="btn btn-sm btn-info" href="@GetDetailsUrl(p.PersonId)">Details</NavLink>
+                        <NavLink class= "btn btn-sm btn-warning" href = "@GetEditUrl(p.PersonId)">Edit</NavLink>
+                        <button class= "btn btn-sm btn-danger" @onclick="@(() => HandleDelete(p))">Delete</button>
+                    </td>
+                </tr>
             }
         }
-    </tbody >
+    </tbody>
+</table>
 
-</table >
+<NavLink class="btn btn-primary" href="/forms/create">Create</NavLink>
+@*
+<button class="btn btn-danger m-2" @onclick="(() => UpdateData())">Update</button>
+<button class="btn btn-info m-2" @onclick="SortWithQuery">Sort (With Query)</button>
+<button class="btn btn-info m-2" @onclick="SortWithoutQuery">Sort (No Query)</button>
+
+<button class="btn btn-primary m-2" @onclick="@(() => Counter++)">Incrament</button>
+<span class="h5">Counter: @Counter</span>
+*@
 
 @code {
-
-    [Inject]
-    public EmpManagerDbContext? Context { get; set; }
+    //[Inject]
+    public EmpManagerDbContext? Context => Service;
 
     public IEnumerable<Person> People { get; set; } = Enumerable.Empty<Person>();
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-        People = Context?.People?.Include(p => p.Department).Include(p => p.Location) ?? Enumerable.Empty<Person>();
+        await UpdateData();
     }
 
+    private IQueryable<Person> Query => Context!.People.Include(p => p.Department).Include(p => p.Location);
+
+    private async Task UpdateData(IQueryable<Person> ? query = null) => People = await (query ?? Query).ToListAsync<Person>();
+
+    public async Task SortWithQuery()
+    {
+        await UpdateData(Query.OrderBy(p => p.LastName));
+    }
+    public void SortWithoutQuery()
+    {
+        People = People.OrderBy(p => p.FirstName).ToList<Person>();
+    }
+
+
     string GetEditUrl(long id) => $"/forms/edit/{id}";
+
+    string GetDetailsUrl(long id) => $"/forms/details/{id}";
+
+    public async Task HandleDelete(Person p)
+    {
+        if(Context != null)
+        {
+            Context.Remove(p);
+            await Context.SaveChangesAsync();
+            await UpdateData();
+        }
+    }
 
 }
