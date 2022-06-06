@@ -34,7 +34,7 @@
         .Include(p => p.Department)
         .Include(p => p.Location);
 
-    public string GetEditUrl(long id) => $"/person/{id}";
+    public string GetEditUrl(long id) => $"/forms/edit/{id}";
 
     //public IEnumerable<string>? Cities => Context?.Locations.Select(l => l.City);
 
