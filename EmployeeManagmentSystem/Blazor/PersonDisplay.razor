@@ -15,9 +15,9 @@ else
         </tbody>
     </table>
 }
-<button class="btn btn-outline-primary" @onclick="HandleClick">Invoke JS function</button>
-    @*<button class="btn btn-outline-primary" @onclick="@(() => HandleClick(false))">Previous</button>
-    <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(true))">Next</button>*@
+
+    <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(false))">Previous</button>
+    <button class="btn btn-outline-primary" @onclick="@(() => HandleClick(true))">Next</button>
 
 @code {
     [Inject]
@@ -26,8 +26,8 @@ else
     [Inject]
     public NavigationManager? NavManager { get; set; }
 
-    [Inject]
-    public IJSRuntime? JSRuntime{ get; set; }
+    //[Inject]
+    //public IJSRuntime? JSRuntime{ get; set; }
 
     [Parameter]
     public long Id { get; set; }
@@ -45,9 +45,10 @@ else
 
     public ElementReference RowReference { get; set; }
 
-    public async Task HandleClick()
+    public async Task HandleClick(bool incrament)
     {
-        await JSRuntime!.InvokeVoidAsync("addTableRows", 2, RowReference);
+        Person = null;
+        NavManager?.NavigateTo($"/person/{(incrament ? Id + 1 : Id - 1)}");
     }
 
 }

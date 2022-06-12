@@ -2,6 +2,8 @@
 @{
     Layout = null;
 }
+@model HostModel
+@using Microsoft.AspNetCore.Authorization
 
 <!DOCTYPE html>
 <html>
@@ -18,3 +20,8 @@
         <script src="~/interop.js"></script>
     </body>
 </html>
+
+@functions{
+    [Authorize]
+    public class HostModel : PageModel{}
+}

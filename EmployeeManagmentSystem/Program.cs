@@ -29,6 +29,12 @@ builder.Services.Configure<IdentityOptions>(opts =>
 var app = builder.Build();
 
 app.UseStaticFiles();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseAuthentication();
+
 app.MapControllers();
 app.MapControllerRoute("controllers", "controllers/{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
@@ -40,5 +46,6 @@ app.MapFallbackToFile("/webassembly/{*path:nonfile}", "/webassembly/index.html")
 
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EmpManagerDbContext>();
 SeedData.SeedDatabase(context);
+IdentitySeedData.CreateAdminAccount(app.Services, app.Configuration);
 
 app.Run();
