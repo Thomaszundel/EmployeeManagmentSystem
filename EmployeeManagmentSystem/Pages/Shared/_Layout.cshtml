@@ -1,15 +1,53 @@
-﻿<!DOCTYPE html>
+﻿
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>@ViewData["Title"] - EmployeeManagmentSystem</title>
     <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
  </head>
- <base href="~/" />
+<base href="~/" />
 <body>
-    <div class="m-2">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a href="/" class="navbar-brand">Employee<b>Solutions</b></a>  		
+	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<!-- Collection of nav links, forms, and other content for toggling -->
+	<div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+		 
+		<div class="navbar-nav">
+			<a href="/" class="nav-item nav-link">Employees</a>
+			<a href="/departments" class="nav-item nav-link">Departments</a>
+			<a href="/person" class="nav-item nav-link">Details</a>
+			<Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admins">
+				<Authorized>
+					<a href="/forms" class="nav-item nav-link">Add Employee</a>
+			
+					<a href="/users/list" class="nav-item nav-link">Add Account</a>
+			
+					<a href="/roles/list" class="nav-item nav-link">Change Privlages</a>
+				</Authorized>
+				<NotAuthorized>
+
+				</NotAuthorized>
+			</Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+			
+			<a href="/account/logout" class="nav-item nav-link text-center p-2 bg-danger">Logout</a>
+			
+			
+		</div>
+	</div>
+</nav>
+<div class="m-2">
         <h5 class="bg-secondary text-white text-center p-2">Razor Page</h5>
         @RenderBody()
     </div>
     <script src="_framework/blazor.server.js"></script>
 </body>
 </html>
+

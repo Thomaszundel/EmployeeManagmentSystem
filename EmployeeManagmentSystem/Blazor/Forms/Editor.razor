@@ -2,7 +2,8 @@
 @page "/forms/create"
 @layout EmptyLayout
 @inherits OwningComponentBase<EmpManagerDbContext>
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admins")]
 
 <link href="/blazorValidation.css" rel="stylesheet" />
 

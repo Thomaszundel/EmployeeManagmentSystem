@@ -1,14 +1,33 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
-<html>
-<head>
+
+
+
+<html lang="en">
+	<head>
     <title>Identity</title>
     <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 </head>
+
 <body>
-    <div class="m-2">
-        <h5 class="bg-info text-white text-center p-2">User Administration</h5>
-        @RenderBody()
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a href="/" class="navbar-brand">Employee<b>Solutions</b></a>  		
+	
+	<!-- Collection of nav links, forms, and other content for toggling -->
+	<div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+		 
+		<div class="navbar-nav">
+			<a href="/" class="nav-item nav-link">Employees</a>
+			<a href="/account/logout" class="nav-item nav-link text-center p-2 bg-danger">Logout</a>
+		</div>
+	</div>
+</nav>
 </body>
 </html>
+
+<div class="m-2">
+        <h5 class="bg-secondary text-white text-center p-2">User Administration</h5>
+        @RenderBody()
+</div>

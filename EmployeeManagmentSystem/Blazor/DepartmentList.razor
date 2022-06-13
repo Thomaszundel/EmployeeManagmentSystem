@@ -1,7 +1,7 @@
 ﻿@page "/departments"
 @page "/depts"
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles = "Admins")]
+
 
 <CascadingValue Name="BgTheme" Value="Theme" IsFixed="false">
     <TableTemplate RowType="Department" RowData="Departments" Highlight="@(d=>d.Name)" SortDirection="@(d => d.Name)">
@@ -20,7 +20,7 @@
 </CascadingValue>
 <SelectFilter Title="@("Theme")" Values="Themes" @bind-SelectedValue="Theme" />
 
-<button class="btn btn-primary" @onclick="HandleClick">People</button>
+
 
 @code {
     [Inject]
